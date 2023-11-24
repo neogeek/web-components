@@ -1,0 +1,28 @@
+{
+  "name": "@neogeek/web-components",
+  "version": "0.0.1",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "1.40.0",
+    "eslint": "8.54.0"
+  },
+  "scripts": {
+    "lint": "eslint components/"
+  },
+  "keywords": [
+    "web-components"
+  ],
+  "authors": [
+    {
+      "name": "Scott Doxey",
+      "email": "hello@scottdoxey.com",
+      "homepage": "http://scottdoxey.com/"
+    }
+  ],
+  "homepage": "https://github.com/neogeek/web-components",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/neogeek/web-components.git"
+  },
+  "private": true
+}

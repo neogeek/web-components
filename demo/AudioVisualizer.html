@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1" />
+    <title>AudioVisualizer</title>
+    <style>
+      audio-visualizer {
+        --canvas-background-color: #eee;
+      }
+    </style>
+    <script src="../components/AudioVisualizer.js" defer></script>
+  </head>
+  <body>
+    <h1>AudioVisualizer</h1>
+
+    <audio-visualizer
+      src="demo.mp3"
+      width-scale="100"
+      height="100"
+      fill="#00f"
+    ></audio-visualizer>
+
+    <script>
+      const audioVisualizer = document.querySelector('audio-visualizer');
+
+      audioVisualizer.addEventListener('mousemove', e => {
+        console.log('test');
+      });
+
+      console.log(audioVisualizer);
+    </script>
+  </body>
+</html>
