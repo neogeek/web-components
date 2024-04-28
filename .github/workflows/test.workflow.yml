@@ -1,20 +1,24 @@
-name: Tests
+name: Test
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'README.md'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  test:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 

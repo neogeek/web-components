@@ -4,10 +4,14 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+      - 'README.md'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
