@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1" />
+    <title>GitHubRepo</title>
+    <style>
+      body {
+        background-color: #f1f8ff;
+      }
+
+      github-repo.dark {
+        --text-color: #fff;
+        --background-color: #000;
+      }
+    </style>
+    <script src="../components/GitHubRepo.js" defer></script>
+  </head>
+  <body>
+    <h1>GitHubRepo</h1>
+
+    <github-repo
+      owner="neogeek"
+      name="web-components"
+      description="A random selection of custom web components."
+    ></github-repo>
+
+    <github-repo
+      owner="neogeek"
+      name="web-components"
+      description="A random selection of custom web components."
+      class="dark"
+    ></github-repo>
+  </body>
+</html>

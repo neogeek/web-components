@@ -8,6 +8,34 @@ python3 -m http.server
 
 ## Components
 
+### `<github-repo>`
+
+<img src="./screenshots/GitHubRepo.png" width="400" />
+
+```html
+<script
+  src="http://unpkg.com/@neogeek/web-components@0.0.1/components/GitHubRepo.js"
+  defer
+></script>
+
+<github-repo
+  owner="neogeek"
+  name="web-components"
+  description="A random selection of custom web components."
+></github-repo>
+```
+
+#### Custom Styles
+
+```css
+github-repo {
+  --margin: 1em;
+  --font-size: 16px;
+  --text-color: #fff;
+  --background-color: #000;
+}
+```
+
 ### `<audio-visualizer>`
 
 #### Usage
