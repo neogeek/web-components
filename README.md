@@ -40,10 +40,10 @@ audio-visualizer {
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      ['audio-component']: AudioComponentAttributes;
+      ['audio-visualizer']: AudioVisualizerAttributes;
     }
 
-    interface AudioComponentAttributes {
+    interface AudioVisualizerAttributes {
       src: string;
       width: string;
       height: string;
