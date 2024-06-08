@@ -1,119 +1,269 @@
 {
-  const delayBeforeHidingCopyCheckmark = 500;
+  const css = content => content;
 
-  const styles = `
-:host {
-  --pre-font-family: 'Roboto Mono', monospace;
-  --pre-font-size: 1rem;
-  --pre-background-color: #eee;
-}
-div {
-  margin: 1rem 0;
-  position: relative;
-  max-width: calc(100% - 2rem);
-  display: inline-block;
-}
-pre {
-  padding: 1rem 4rem 1rem 1rem;
-  font-family: var(--pre-font-family);
-  font-size: var(--pre-font-size);
-  text-align: left;
-  overflow: auto;
-  background-color: var(--pre-background-color);
-  user-select: all;
-}
-button {
-  position: absolute;
-  top: calc(50% - 1.25rem / 2);
-  right: 1rem;
-  padding: 0;
-  font-size: 1rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-button.active svg {
-  stroke: green;
-  fill: green;
-}
-svg {
-  fill: #000;
-}
-`;
+  const delayBeforeHidingCopyCheckmark = 1000;
 
-  const createSVGClipboard = () => {
-    const xmlNS = 'http://www.w3.org/2000/svg';
+  const styles = css`
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/github.min.css')
+    (prefers-color-scheme: light);
 
-    const svgClipboard = document.createElementNS(xmlNS, 'svg');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/base16/dracula.min.css')
+    (prefers-color-scheme: dark);
 
-    svgClipboard.setAttribute('height', '1.25em');
-    svgClipboard.setAttribute('viewBox', '0 0 384 512');
+    div {
+      position: relative;
+    }
 
-    svgClipboard.appendChild(
-      document.createComment(
-        'Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.'
-      )
-    );
+    pre {
+      margin: 2rem 0;
+      font-family: inherit;
+      font-size: 1rem;
+    }
 
-    const svgClipboardPath = document.createElementNS(xmlNS, 'path');
+    button {
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
+      padding: 0;
+      font-size: 1rem;
+      line-height: 1;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
 
-    svgClipboardPath.setAttribute(
-      'd',
-      'M280 64H320C355.3 64 384 92.7 384 128V448C384 483.3 355.3 512 320 512H64C28.7 512 0 483.3 0 448V128C0 92.7 28.7 64 64 64H104H113.6C121 27.5 153.3 0 192 0C230.7 0 263 27.5 270.4 64H280ZM64 112C55.2 112 48 119.2 48 128V448C48 456.8 55.2 464 64 464H320C328.8 464 336 456.8 336 448V128C336 119.2 328.8 112 320 112H304V136C304 149.3 293.3 160 280 160H192H104C90.7 160 80 149.3 80 136V112H64ZM192 104C198.365 104 204.47 101.471 208.971 96.9706C213.471 92.4697 216 86.3652 216 80C216 73.6348 213.471 67.5303 208.971 63.0294C204.47 58.5286 198.365 56 192 56C185.635 56 179.53 58.5286 175.029 63.0294C170.529 67.5303 168 73.6348 168 80C168 86.3652 170.529 92.4697 175.029 96.9706C179.53 101.471 185.635 104 192 104Z'
-    );
+    button svg:hover {
+      opacity: 0.75;
+    }
 
-    svgClipboard.appendChild(svgClipboardPath);
+    button span {
+      display: block;
+      position: absolute;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      opacity: 0;
+      right: calc(100% + 1rem);
+    }
 
-    const svgCheckMarkPath = document.createElementNS(xmlNS, 'path');
+    button.copied span {
+      animation: slide-in 200ms;
+      animation-fill-mode: forwards;
+    }
 
-    svgCheckMarkPath.setAttribute('d', 'M121 328.892L161.343 369L274 257');
-    svgCheckMarkPath.setAttribute('fill', 'none');
-    svgCheckMarkPath.setAttribute('stroke-width', '40');
-    svgCheckMarkPath.setAttribute('stroke-linecap', 'round');
-    svgCheckMarkPath.setAttribute('stroke-linejoin', 'round');
+    button.slide-out span {
+      animation: slide-out 200ms;
+      animation-fill-mode: forwards;
+    }
 
-    svgClipboard.appendChild(svgCheckMarkPath);
+    @media (prefers-color-scheme: dark) {
+      svg {
+        fill: #fff;
+      }
 
-    return svgClipboard;
-  };
+      button.copied svg {
+        stroke: #fff;
+      }
+
+      button span {
+        color: #000;
+        background-color: #fff;
+      }
+    }
+
+    @media (prefers-color-scheme: light) {
+      svg {
+        fill: #000;
+      }
+
+      button.copied svg {
+        stroke: #000;
+      }
+
+      button span {
+        color: #fff;
+        background-color: #000;
+      }
+    }
+
+    @keyframes slide-in {
+      from {
+        opacity: 0;
+        right: calc(100% + 0.75rem);
+      }
+
+      to {
+        opacity: 1;
+        right: calc(100% + 0.5rem);
+      }
+    }
+
+    @keyframes slide-out {
+      from {
+        opacity: 1;
+        right: calc(100% + 0.5rem);
+      }
+
+      to {
+        opacity: 0;
+        right: calc(100% + 0.75rem);
+      }
+    }
+  `;
 
   class CopyToClipboard extends HTMLElement {
-    connectedCallback() {
-      const shadow = this.attachShadow({ mode: 'open' });
+    /** @type {any} */
+    timeout = null;
 
+    constructor() {
+      super();
+
+      this.attachShadow({ mode: 'open' });
+
+      this.shadowRoot?.appendChild(this.stylesheet());
+      this.shadowRoot?.appendChild(this.preTags());
+    }
+
+    /**
+     * Returns a document fragment containing copies of the Web Component's child pre tags.
+     *
+     * @returns {DocumentFragment}
+     */
+    preTags() {
+      const fragment = document.createDocumentFragment();
+
+      /** @type {HTMLPreElement[]} */
+      const tags = Array.from(this.querySelectorAll('pre'));
+
+      for (let i = 0; i < tags.length; i += 1) {
+        const div = document.createElement('div');
+
+        div.appendChild(this.clipboardButton());
+
+        div.appendChild(tags[i]);
+
+        fragment.appendChild(div);
+      }
+
+      return fragment;
+    }
+
+    /**
+     * Returns a style tag for use within the Web Component shadow DOM.
+     *
+     * @returns {HTMLStyleElement}
+     */
+    stylesheet() {
       const style = document.createElement('style');
 
       style.appendChild(document.createTextNode(styles));
 
-      shadow.appendChild(style);
+      return style;
+    }
 
-      const preTags = Array.from(this.querySelectorAll('pre'));
+    handleClipboardButtonClick = e => {
+      /** @type {HTMLButtonElement} */
+      const button = e.target.closest('button');
+      /** @type {HTMLPreElement} */
+      const pre = e.target.closest('div').querySelector('pre');
 
-      preTags.forEach(preTag => {
-        const div = document.createElement('div');
+      if (!pre || !pre.textContent) {
+        return;
+      }
 
-        const button = document.createElement('button');
+      let content = pre.textContent.trim();
 
-        button.appendChild(createSVGClipboard().cloneNode(true));
+      if (pre.querySelector('.language-bash') && !content.match(/\n/)) {
+        content = content.replace(/^\$\s+/, '');
+      }
 
-        button.addEventListener('click', () => {
-          if (preTag.textContent) {
-            navigator.clipboard.writeText(preTag.textContent);
+      navigator.clipboard.writeText(content);
 
-            button.classList.add('active');
+      button.classList.add('copied');
+      button.classList.remove('slide-out');
 
-            setTimeout(() => {
-              button.classList.remove('active');
-            }, delayBeforeHidingCopyCheckmark);
-          }
-        });
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
 
-        div.appendChild(button);
+      this.timeout = setTimeout(() => {
+        button.classList.remove('copied');
+        button.classList.add('slide-out');
+      }, delayBeforeHidingCopyCheckmark);
+    };
 
-        div.appendChild(preTag);
+    /**
+     * Returns a button with the clipboard SVG icon.
+     *
+     * @returns {HTMLButtonElement}
+     */
+    clipboardButton = () => {
+      const button = document.createElement('button');
 
-        shadow.appendChild(div);
-      });
+      button.appendChild(this.createElementWithTextNode('span', 'Copied!'));
+
+      button.appendChild(this.clipboardIcon());
+
+      button.addEventListener('click', this.handleClipboardButtonClick);
+
+      return button;
+    };
+
+    /**
+     * Returns an SVG icon of a clipboard.
+     *
+     * @returns {SVGSVGElement}
+     */
+    clipboardIcon = () => {
+      const xmlNamespace = 'http://www.w3.org/2000/svg';
+
+      const svg = document.createElementNS(xmlNamespace, 'svg');
+
+      svg.setAttribute('height', '1.5em');
+      svg.setAttribute('viewBox', '0 0 384 512');
+
+      svg.appendChild(
+        document.createComment(
+          'Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.'
+        )
+      );
+
+      const svgClipboardPath = document.createElementNS(xmlNamespace, 'path');
+
+      svgClipboardPath.setAttribute(
+        'd',
+        'M280 64h40c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128C0 92.7 28.7 64 64 64h40 9.6C121 27.5 153.3 0 192 0s71 27.5 78.4 64H280zM64 112c-8.8 0-16 7.2-16 16V448c0 8.8 7.2 16 16 16H320c8.8 0 16-7.2 16-16V128c0-8.8-7.2-16-16-16H304v24c0 13.3-10.7 24-24 24H192 104c-13.3 0-24-10.7-24-24V112H64zm128-8a24 24 0 1 0 0-48 24 24 0 1 0 0 48z'
+      );
+
+      svg.appendChild(svgClipboardPath);
+
+      const svgCheckMarkPath = document.createElementNS(xmlNamespace, 'path');
+
+      svgCheckMarkPath.setAttribute('d', 'M121 328.892L161.343 369L274 257');
+      svgCheckMarkPath.setAttribute('fill', 'none');
+      svgCheckMarkPath.setAttribute('stroke-width', '40');
+      svgCheckMarkPath.setAttribute('stroke-linecap', 'round');
+      svgCheckMarkPath.setAttribute('stroke-linejoin', 'round');
+
+      svg.appendChild(svgCheckMarkPath);
+
+      return svg;
+    };
+
+    /**
+     * Create an HTMLElement with text.
+     *
+     * @param {string} tagName
+     * @param {string | null} content
+     * @returns {HTMLElement}
+     */
+    createElementWithTextNode(tagName, content = null) {
+      const element = document.createElement(tagName);
+
+      if (content) {
+        element.appendChild(document.createTextNode(content));
+      }
+
+      return element;
     }
   }
 
